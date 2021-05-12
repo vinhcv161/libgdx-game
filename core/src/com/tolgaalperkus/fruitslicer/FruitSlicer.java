@@ -40,7 +40,8 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     Array<Fruit> fruitArray = new Array<Fruit>();
 
     // menu
-    private Button playBtn, exitBtn, topScoresBtn;
+    private boolean isShowTopScores;
+    private Button playBtn, exitBtn, topScoresBtn, exitTopScores;
 
     @Override
     public void create() {
@@ -160,7 +161,8 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
             }
             //font.draw(batch, "Start", Gdx.graphics.getWidth() / 2f - 250, Gdx.graphics.getHeight() / 2f);
             // B2: tạo menu
-            menuRender();
+            if (isShowTopScores) topScoresRender();
+            else menuRender();
         }
         // Hiển thị điểm
         font.draw(batch, "Score : " + score, 50, 100);
@@ -221,12 +223,18 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         // B3: người dùng thao tác với màn hình
-        if (lives <= 0 && currentTime - gameOverTime > 2f) {
+        if (isShowTopScores) { // screen top scores
+            if (isBtnClicked(exitTopScores, screenX, screenY)) {
+                exitTopScores = null;
+                isShowTopScores = false;
+            }
+        } else if (lives <= 0 && currentTime - gameOverTime > 2f) { // screen menu
             if (isBtnClicked(playBtn, screenX, screenY)) { // start
                 System.out.println("=========PLAY==========");
                 this.resetGame();
             } else if (isBtnClicked(topScoresBtn, screenX, screenY)) { // exit
                 System.out.println("=========TOP SCORES==========");
+                isShowTopScores = true;
             } else if (isBtnClicked(exitBtn, screenX, screenY)) { // topScores
                 System.out.println("=========EXIT==========");
                 Gdx.app.exit();
@@ -239,7 +247,8 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
 //        System.out.println("screenX - screenY");
 //        System.out.println(screenX + " - " + screenY);
 //        System.out.println(btn.getX() + " - " + btn.getY());
-        return btn.getX() < screenX && screenX < btn.getX() + btn.getWidth() && // width
+        return btn != null &&
+                btn.getX() < screenX && screenX < btn.getX() + btn.getWidth() && // width
                 Gdx.graphics.getHeight() - btn.getY() > screenY && screenY > Gdx.graphics.getHeight() - btn.getY() - btn.getHeight(); // height
     }
 
@@ -249,6 +258,22 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         lives = 4;
         genSpeed = startGenSpeed;
         fruitArray.clear();
+    }
+
+    // TODO ...
+    private void topScoresRender() {
+        float xBtn = Gdx.graphics.getWidth() / 2 - 250;
+        float yBtn = Gdx.graphics.getHeight() / 1.3f;
+        float padding = 125f;
+        font.draw(batch, "1. 3056", xBtn, yBtn);
+        font.draw(batch, "2. 2097", xBtn, yBtn - padding);
+        font.draw(batch, "3. 2097", xBtn, yBtn - 2 * padding);
+        font.draw(batch, "4. 2097", xBtn, yBtn - 3 * padding);
+        font.draw(batch, "5. 2097", xBtn, yBtn - 4 * padding);
+        // font.draw(batch, "EXIT", xBtn + 100, yBtn - 5 * padding);
+        // create info exit btn
+        exitTopScores = new Button(new Texture("buttonExit.png"), xBtn, yBtn - 5 * padding - 1.5f * Fruit.radius, exitBtn.getWidth(), exitBtn.getHeight());
+        drawBtn(exitTopScores);
     }
 
     /*

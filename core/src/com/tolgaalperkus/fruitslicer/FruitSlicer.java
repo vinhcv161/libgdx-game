@@ -223,7 +223,18 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (lives <= 0 && currentTime - gameOverTime > 2f) {
+            this.resetGame();
+        }
         return false;
+    }
+
+    private void resetGame() {
+        gameOverTime = 0f;
+        score = 0;
+        lives = 4;
+        genSpeed = startGenSpeed;
+        fruitArray.clear();
     }
 
     /*
@@ -234,11 +245,7 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (lives <= 0 && currentTime - gameOverTime > 2f) {
             //trò chơi vẫn còn trên menu
-            gameOverTime = 0f;
-            score = 0;
-            lives = 4;
-            genSpeed = startGenSpeed;
-            fruitArray.clear();
+            this.resetGame();
         } else {
             //trong khi trò chơi đang diễn ra
             Array<Fruit> toRemove = new Array<Fruit>();

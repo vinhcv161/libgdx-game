@@ -175,6 +175,22 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         drawBtn(exitBtn);
     }
 
+    // TODO ...
+    private void topScoresRender() {
+        float xBtn = Gdx.graphics.getWidth() / 2 - 250;
+        float yBtn = Gdx.graphics.getHeight() / 1.3f;
+        float padding = 125f;
+        font.draw(batch, "1. 3056", xBtn, yBtn);
+        font.draw(batch, "2. 2097", xBtn, yBtn - padding);
+        font.draw(batch, "3. 2097", xBtn, yBtn - 2 * padding);
+        font.draw(batch, "4. 2097", xBtn, yBtn - 3 * padding);
+        font.draw(batch, "5. 2097", xBtn, yBtn - 4 * padding);
+        // font.draw(batch, "EXIT", xBtn + 100, yBtn - 5 * padding);
+        // create info exit btn
+        exitTopScores = new Button(new Texture("buttonExit.png"), xBtn, yBtn - 5 * padding - 1.5f * Fruit.radius, exitBtn.getWidth(), exitBtn.getHeight());
+        drawBtn(exitTopScores);
+    }
+
     private void drawBtn(Button btn) {
         batch.draw(btn.getText(), btn.getX(), btn.getY(), btn.getWidth(), btn.getHeight());
     }
@@ -244,9 +260,9 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     }
 
     private boolean isBtnClicked(Button btn, int screenX, int screenY) {
-//        System.out.println("screenX - screenY");
-//        System.out.println(screenX + " - " + screenY);
-//        System.out.println(btn.getX() + " - " + btn.getY());
+        /*System.out.println("screenX - screenY");
+        System.out.println(screenX + " - " + screenY);
+        System.out.println(btn.getX() + " - " + btn.getY());*/
         return btn != null &&
                 btn.getX() < screenX && screenX < btn.getX() + btn.getWidth() && // width
                 Gdx.graphics.getHeight() - btn.getY() > screenY && screenY > Gdx.graphics.getHeight() - btn.getY() - btn.getHeight(); // height
@@ -258,22 +274,6 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         lives = 4;
         genSpeed = startGenSpeed;
         fruitArray.clear();
-    }
-
-    // TODO ...
-    private void topScoresRender() {
-        float xBtn = Gdx.graphics.getWidth() / 2 - 250;
-        float yBtn = Gdx.graphics.getHeight() / 1.3f;
-        float padding = 125f;
-        font.draw(batch, "1. 3056", xBtn, yBtn);
-        font.draw(batch, "2. 2097", xBtn, yBtn - padding);
-        font.draw(batch, "3. 2097", xBtn, yBtn - 2 * padding);
-        font.draw(batch, "4. 2097", xBtn, yBtn - 3 * padding);
-        font.draw(batch, "5. 2097", xBtn, yBtn - 4 * padding);
-        // font.draw(batch, "EXIT", xBtn + 100, yBtn - 5 * padding);
-        // create info exit btn
-        exitTopScores = new Button(new Texture("buttonExit.png"), xBtn, yBtn - 5 * padding - 1.5f * Fruit.radius, exitBtn.getWidth(), exitBtn.getHeight());
-        drawBtn(exitTopScores);
     }
 
     /*

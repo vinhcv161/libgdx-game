@@ -1,4 +1,0 @@
-com/tolgaalperkus/fruitslicer/AndroidLauncher.java
- com.tolgaalperkus.fruitslicer.AndroidLauncher
-com/tolgaalperkus/fruitslicer/BuildConfig.java
- com.tolgaalperkus.fruitslicer.BuildConfig

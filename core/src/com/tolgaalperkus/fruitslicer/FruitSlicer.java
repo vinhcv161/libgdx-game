@@ -66,7 +66,7 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         params.borderColor = Color.RED;
         params.size = 100;
         font = fontGen.generateFont(params);
-        // menu
+        // B1: khởi tạo các thông số cho menu
         float xBtn = Gdx.graphics.getWidth() / 2 - 250;
         float yBtn = Gdx.graphics.getHeight() / 1.65f;
         float widthBtn = 2.5f * Fruit.radius;
@@ -79,10 +79,10 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void render() {
-        //thể thêm các đối tượng sẽ được vẽ
+        // thể thêm các đối tượng sẽ được vẽ
         batch.begin();
 
-        //Gdx.graphics.getWidth() và Gdx.graphics.getHeight() gọi kích thước màn hình thiết bị bằng các lệnh
+        // Gdx.graphics.getWidth() và Gdx.graphics.getHeight() là kích thước màn hình thiết bị
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         //Vì số khung hình mỗi giây sẽ khác nhau trên các thiết bị khác nhau, tôi tạo bộ đếm thời gian của riêng mình.
@@ -91,13 +91,8 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         float deltaTime = (float) frameTime;
         currentTime = newTime;
 
-        if (lives <= 0 && gameOverTime == 0f) {
-            //trò chơi kết thúc
-            gameOverTime = currentTime;
-        }
         if (lives > 0) {
             //những việc cần làm trong khi trò chơi đang chạy
-
             genSpeed -= deltaTime * 0.015f;
 
             if (genCounter <= 0f) {
@@ -158,16 +153,17 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
                 fruitArray.removeValue(f, true);
             }
 
-        }
-
-        //Chúng tôi đang thêm các bài báo chúng tôi sẽ viết trên màn hình
-        font.draw(batch, "Score : " + score, 50, 100);
-        if (lives <= 0) {
+        } else {
+            // trò chơi vừa mới kết thúc
+            if (gameOverTime == 0f) {
+                gameOverTime = currentTime;
+            }
             //font.draw(batch, "Start", Gdx.graphics.getWidth() / 2f - 250, Gdx.graphics.getHeight() / 2f);
-            // start menu
-            this.menuRender();
-            // end menu
+            // B2: tạo menu
+            menuRender();
         }
+        // Hiển thị điểm
+        font.draw(batch, "Score : " + score, 50, 100);
         batch.end();
     }
 
@@ -224,6 +220,7 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        // B3: người dùng thao tác với màn hình
         if (lives <= 0 && currentTime - gameOverTime > 2f) {
             if (isBtnClicked(playBtn, screenX, screenY)) { // start
                 System.out.println("=========PLAY==========");
@@ -260,10 +257,6 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     */
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-//        if (lives <= 0 && currentTime - gameOverTime > 2f) {
-//            //trò chơi vẫn còn trên menu
-//            this.resetGame();
-//        } else {
         if (lives > 0) {
             //trong khi trò chơi đang diễn ra
             Array<Fruit> toRemove = new Array<Fruit>();

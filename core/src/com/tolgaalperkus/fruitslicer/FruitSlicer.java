@@ -72,9 +72,9 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         float widthBtn = 2.5f * Fruit.radius;
         float heightBtn = 1.3f * Fruit.radius;
         float paddingBtn = heightBtn + 20f;
-        playBtn = new Button(new Texture("buttonPlayAgain.png"), xBtn, yBtn, widthBtn, heightBtn);
-        topScoresBtn = new Button(new Texture("buttonDone.png"), xBtn, yBtn - paddingBtn, widthBtn, heightBtn);
-        exitBtn = new Button(new Texture("buttonDone.png"), xBtn, yBtn - 2 * paddingBtn, widthBtn, heightBtn);
+        playBtn = new Button(new Texture("buttonStart.png"), xBtn, yBtn, widthBtn, heightBtn);
+        topScoresBtn = new Button(new Texture("buttonTopScores.png"), xBtn, yBtn - paddingBtn, widthBtn, heightBtn);
+        exitBtn = new Button(new Texture("buttonExit.png"), xBtn, yBtn - 2 * paddingBtn, widthBtn, heightBtn);
     }
 
     @Override
@@ -232,6 +232,7 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
                 System.out.println("=========TOP SCORES==========");
             } else if (isBtnClicked(exitBtn, screenX, screenY)) { // topScores
                 System.out.println("=========EXIT==========");
+                Gdx.app.exit();
             }
         }
         return false;

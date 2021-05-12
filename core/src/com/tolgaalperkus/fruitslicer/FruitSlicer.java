@@ -40,8 +40,7 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     Array<Fruit> fruitArray = new Array<Fruit>();
 
     // menu
-    private float xBtn, yBtn, widthBtn, heightBtn, paddingBtn;
-    private Texture playBtn, exitBtn, topScoresBtn;
+    private Button playBtn, exitBtn, topScoresBtn;
 
     @Override
     public void create() {
@@ -68,14 +67,14 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         params.size = 100;
         font = fontGen.generateFont(params);
         // menu
-        xBtn = Gdx.graphics.getWidth() / 2 - 250;
-        yBtn = Gdx.graphics.getHeight() / 1.65f;
-        widthBtn = 2.5f * Fruit.radius;
-        heightBtn = 1.3f * Fruit.radius;
-        paddingBtn = heightBtn + 20f;
-        playBtn = new Texture("buttonPlayAgain.png");
-        exitBtn = new Texture("buttonDone.png");
-        topScoresBtn = new Texture("buttonDone.png");
+        float xBtn = Gdx.graphics.getWidth() / 2 - 250;
+        float yBtn = Gdx.graphics.getHeight() / 1.65f;
+        float widthBtn = 2.5f * Fruit.radius;
+        float heightBtn = 1.3f * Fruit.radius;
+        float paddingBtn = heightBtn + 20f;
+        playBtn = new Button(new Texture("buttonPlayAgain.png"), xBtn, yBtn, widthBtn, heightBtn);
+        topScoresBtn = new Button(new Texture("buttonDone.png"), xBtn, yBtn - paddingBtn, widthBtn, heightBtn);
+        exitBtn = new Button(new Texture("buttonDone.png"), xBtn, yBtn - 2 * paddingBtn, widthBtn, heightBtn);
     }
 
     @Override
@@ -173,13 +172,16 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     }
 
     private void menuRender() {
-        batch.draw(playBtn, xBtn, yBtn, widthBtn, heightBtn);
-        batch.draw(topScoresBtn, xBtn, yBtn - paddingBtn, widthBtn, heightBtn);
-        batch.draw(exitBtn, xBtn, yBtn - 2 * paddingBtn, widthBtn, heightBtn);
+        drawBtn(playBtn);
+        drawBtn(topScoresBtn);
+        drawBtn(exitBtn);
+    }
+
+    private void drawBtn(Button btn) {
+        batch.draw(btn.getText(), btn.getX(), btn.getY(), btn.getWidth(), btn.getHeight());
     }
 
     private void addItem() {
-
         float pos = random.nextFloat() * Math.max(Gdx.graphics.getHeight(), Gdx.graphics.getWidth());
 
         Fruit item = new Fruit(new Vector2(pos, -Fruit.radius), new Vector2((Gdx.graphics.getWidth() * 0.5f - pos) * (0.3f + (random.nextFloat() - 0.5f)), Gdx.graphics.getHeight() * 0.5f));
@@ -191,7 +193,6 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         else if (type + zorluk > 0.78f) item.type = Fruit.Type.BOMB;
         if (fruitArray.size < 15) fruitArray.add(item);
         else if (zorluk < 0.28) zorluk = zorluk + 0.01f;
-
     }
 
     @Override
@@ -224,9 +225,24 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (lives <= 0 && currentTime - gameOverTime > 2f) {
-            this.resetGame();
+            if (isBtnClicked(playBtn, screenX, screenY)) { // start
+                System.out.println("=========PLAY==========");
+                this.resetGame();
+            } else if (isBtnClicked(topScoresBtn, screenX, screenY)) { // exit
+                System.out.println("=========TOP SCORES==========");
+            } else if (isBtnClicked(exitBtn, screenX, screenY)) { // topScores
+                System.out.println("=========EXIT==========");
+            }
         }
         return false;
+    }
+
+    private boolean isBtnClicked(Button btn, int screenX, int screenY) {
+//        System.out.println("screenX - screenY");
+//        System.out.println(screenX + " - " + screenY);
+//        System.out.println(btn.getX() + " - " + btn.getY());
+        return btn.getX() < screenX && screenX < btn.getX() + btn.getWidth() && // width
+                Gdx.graphics.getHeight() - btn.getY() > screenY && screenY > Gdx.graphics.getHeight() - btn.getY() - btn.getHeight(); // height
     }
 
     private void resetGame() {
@@ -243,10 +259,11 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     */
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if (lives <= 0 && currentTime - gameOverTime > 2f) {
-            //trò chơi vẫn còn trên menu
-            this.resetGame();
-        } else {
+//        if (lives <= 0 && currentTime - gameOverTime > 2f) {
+//            //trò chơi vẫn còn trên menu
+//            this.resetGame();
+//        } else {
+        if (lives > 0) {
             //trong khi trò chơi đang diễn ra
             Array<Fruit> toRemove = new Array<Fruit>();
             Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);

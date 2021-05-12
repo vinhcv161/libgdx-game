@@ -1,0 +1,6 @@
+com/tolgaalperkus/fruitslicer/Fruit.java
+ com.tolgaalperkus.fruitslicer.Fruit
+ com.tolgaalperkus.fruitslicer.Fruit$Type
+com/tolgaalperkus/fruitslicer/FruitSlicer.java
+ com.tolgaalperkus.fruitslicer.FruitSlicer
+ com.tolgaalperkus.fruitslicer.FruitSlicer$1

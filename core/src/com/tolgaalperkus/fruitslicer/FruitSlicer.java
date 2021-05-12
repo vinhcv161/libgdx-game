@@ -86,12 +86,6 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         //Gdx.graphics.getWidth() và Gdx.graphics.getHeight() gọi kích thước màn hình thiết bị bằng các lệnh
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // start menu
-        batch.draw(playBtn, xBtn, yBtn, widthBtn, heightBtn);
-        batch.draw(topScoresBtn, xBtn, yBtn - paddingBtn, widthBtn, heightBtn);
-        batch.draw(exitBtn, xBtn, yBtn - 2 * paddingBtn, widthBtn, heightBtn);
-        // end menu
-
         //Vì số khung hình mỗi giây sẽ khác nhau trên các thiết bị khác nhau, tôi tạo bộ đếm thời gian của riêng mình.
         double newTime = TimeUtils.millis() / 1000.0;
         double frameTime = Math.min(newTime - currentTime, 0.3);
@@ -171,8 +165,17 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         font.draw(batch, "Score : " + score, 50, 100);
         if (lives <= 0) {
             //font.draw(batch, "Start", Gdx.graphics.getWidth() / 2f - 250, Gdx.graphics.getHeight() / 2f);
+            // start menu
+            this.menuRender();
+            // end menu
         }
         batch.end();
+    }
+
+    private void menuRender() {
+        batch.draw(playBtn, xBtn, yBtn, widthBtn, heightBtn);
+        batch.draw(topScoresBtn, xBtn, yBtn - paddingBtn, widthBtn, heightBtn);
+        batch.draw(exitBtn, xBtn, yBtn - 2 * paddingBtn, widthBtn, heightBtn);
     }
 
     private void addItem() {

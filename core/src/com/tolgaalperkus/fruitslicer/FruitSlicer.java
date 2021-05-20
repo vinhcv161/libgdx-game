@@ -3,6 +3,8 @@ package com.tolgaalperkus.fruitslicer;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -42,6 +44,11 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     // menu
     private boolean isShowTopScores;
     private Button playBtn, exitBtn, topScoresBtn, exitTopScores;
+    // sound
+    private Music music;
+    private Sound sound;
+    private Integer[] touchPointsX;
+    private int touchIdx;
 
     @Override
     public void create() {
@@ -76,6 +83,13 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         playBtn = new Button(new Texture("buttonStart.png"), xBtn, yBtn, widthBtn, heightBtn);
         topScoresBtn = new Button(new Texture("buttonTopScores.png"), xBtn, yBtn - paddingBtn, widthBtn, heightBtn);
         exitBtn = new Button(new Texture("buttonExit.png"), xBtn, yBtn - 2 * paddingBtn, widthBtn, heightBtn);
+        // sound
+        music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
+        music.setLooping(true);
+        music.setVolume(0.1f);
+        music.play();
+        sound = Gdx.audio.newSound(Gdx.files.internal("sfx_wing.ogg"));
+        touchPointsX = new Integer[2];
     }
 
     @Override
@@ -210,34 +224,20 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     }
 
     @Override
-    public void dispose() {
-        batch.dispose();
-        font.dispose();
-        fontGen.dispose();
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (lives > 0) {
+            touchIdx = -1;
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        // sound: when touch
+        long id = sound.play(0.1f);
+        sound.setPitch(id, 2);
+        sound.setLooping(id, false);
+
         // B3: người dùng thao tác với màn hình
         if (isShowTopScores) { // screen top scores
             if (isBtnClicked(exitTopScores, screenX, screenY)) {
@@ -282,8 +282,25 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     */
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        // trò chơi đang diễn ra
         if (lives > 0) {
-            //trong khi trò chơi đang diễn ra
+            // sound: khi di tay chém hoa quả.
+            touchIdx++;
+            if (touchIdx == 0) { // first touch
+                createTouchMusic();
+
+            } else if (touchIdx == 2) {
+                boolean isOldUp = touchPointsX[1] - touchPointsX[0] > 0;
+                boolean isUp = screenX - touchPointsX[1] > 0;
+                if (isOldUp && !isUp || !isOldUp && isUp) { // đảo chiều di ngón tay
+                    createTouchMusic();
+                }
+                touchIdx = 1; // vượt quá index của mảng touchPointsX thì gán lại bằng 1;
+                touchPointsX[0] = touchPointsX[1]; // swap
+            }
+            // set current point
+            touchPointsX[touchIdx] = screenX; // X current point
+
             Array<Fruit> toRemove = new Array<Fruit>();
             Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
             int plusScore = 0;
@@ -318,6 +335,12 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         return false;
     }
 
+    private void createTouchMusic() {
+        long id = sound.play(0.05f);
+        sound.setPitch(id, 2);
+        sound.setLooping(id, false);
+    }
+
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         return false;
@@ -326,5 +349,30 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean scrolled(float amountX, float amountY) {
         return false;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        batch.dispose();
+        font.dispose();
+        fontGen.dispose();
+        music.dispose();
+        sound.dispose();
     }
 }

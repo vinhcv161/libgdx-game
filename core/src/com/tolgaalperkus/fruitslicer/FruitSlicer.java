@@ -54,7 +54,7 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     public void create() {
         batch = new SpriteBatch();
         //Trỏ địa chỉ của các hình ảnh đến các đối tượng mà chúng tôi xác định trong lớp kết cấu.
-        background = new Texture("kitchenBg.png");
+        background = new Texture("ninja.jpg");
         apple = new Texture("apple.png");
         bomb = new Texture("piecesBomb.png");
         time = new Texture("piecesTime.png");
@@ -69,9 +69,9 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         //và các tính năng của nó như chúng tôi muốn nhờ vào plugin FreeType
         fontGen = new FreeTypeFontGenerator(Gdx.files.internal("robotobold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        params.color = Color.BLACK;
-        params.borderWidth = 2;
-        params.borderColor = Color.RED;
+        params.color = Color.WHITE;
+        // params.borderWidth = 2;
+        // params.borderColor = Color.WHITE;
         params.size = 100;
         font = fontGen.generateFont(params);
         // B1: khởi tạo các thông số cho menu
@@ -86,7 +86,7 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         // sound
         music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
         music.setLooping(true);
-        music.setVolume(0.1f);
+        music.setVolume(0.2f);
         music.play();
         sound = Gdx.audio.newSound(Gdx.files.internal("sfx_wing.ogg"));
         touchPointsX = new Integer[2];
@@ -336,7 +336,7 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     }
 
     private void createTouchMusic() {
-        long id = sound.play(0.05f);
+        long id = sound.play(0.1f);
         sound.setPitch(id, 2);
         sound.setLooping(id, false);
     }

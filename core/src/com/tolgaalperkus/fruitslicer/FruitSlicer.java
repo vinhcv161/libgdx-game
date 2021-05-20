@@ -47,7 +47,7 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     // sound
     private Music music;
     private Sound sound;
-    private Integer[] touchPointsX;
+    private Integer[] touchPointsX; // chỉ gồm 2 phần tử, tác dụng ghi log để check đảo chiều di ngón tay
     private int touchIdx;
 
     @Override
@@ -83,7 +83,7 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
         playBtn = new Button(new Texture("buttonStart.png"), xBtn, yBtn, widthBtn, heightBtn);
         topScoresBtn = new Button(new Texture("buttonTopScores.png"), xBtn, yBtn - paddingBtn, widthBtn, heightBtn);
         exitBtn = new Button(new Texture("buttonExit.png"), xBtn, yBtn - 2 * paddingBtn, widthBtn, heightBtn);
-        // sound
+        // B1: create sound
         music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
         music.setLooping(true);
         music.setVolume(0.2f);
@@ -226,18 +226,19 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (lives > 0) {
-            touchIdx = -1;
+            // for di ngón tay: màn hình chơi game
+            touchIdx = -1; // B2: Bắt đầu chạm ngón tay xuống
+        } else {
+            // for chạm rồi nhấc lên: màn hình menu
+            long id = sound.play(0.1f);
+            sound.setPitch(id, 2);
+            sound.setLooping(id, false);
         }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        // sound: when touch
-        long id = sound.play(0.1f);
-        sound.setPitch(id, 2);
-        sound.setLooping(id, false);
-
         // B3: người dùng thao tác với màn hình
         if (isShowTopScores) { // screen top scores
             if (isBtnClicked(exitTopScores, screenX, screenY)) {
@@ -284,24 +285,23 @@ public class FruitSlicer extends ApplicationAdapter implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         // trò chơi đang diễn ra
         if (lives > 0) {
-            // sound: khi di tay chém hoa quả.
+            // B3: sound: khi di tay chém hoa quả.
             touchIdx++;
             if (touchIdx == 0) { // first touch
                 createTouchMusic();
-
             } else if (touchIdx == 2) {
                 boolean isOldUp = touchPointsX[1] - touchPointsX[0] > 0;
                 boolean isUp = screenX - touchPointsX[1] > 0;
                 if (isOldUp && !isUp || !isOldUp && isUp) { // đảo chiều di ngón tay
                     createTouchMusic();
                 }
-                touchIdx = 1; // vượt quá index của mảng touchPointsX thì gán lại bằng 1;
+                touchIdx = 1; // vượt quá index của mảng touchPointsX thì gán lại bằng 1
                 touchPointsX[0] = touchPointsX[1]; // swap
             }
             // set current point
             touchPointsX[touchIdx] = screenX; // X current point
 
-            Array<Fruit> toRemove = new Array<Fruit>();
+            Array<Fruit> toRemove = new Array<>();
             Vector2 pos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
             int plusScore = 0;
             //Trong phần này, điểm số và mạng sống được thay đổi tùy theo loại đối tượng được chạm vào.

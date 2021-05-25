@@ -1,4 +1,4 @@
-package com.tolgaalperkus.fruitslicer;
+package com.fruitslicer;
 
 import android.os.Bundle;
 

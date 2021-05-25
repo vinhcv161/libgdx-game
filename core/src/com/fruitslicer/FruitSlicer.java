@@ -1,4 +1,4 @@
-package com.tolgaalperkus.fruitslicer;
+package com.fruitslicer;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

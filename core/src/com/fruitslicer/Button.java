@@ -1,4 +1,4 @@
-package com.tolgaalperkus.fruitslicer;
+package com.fruitslicer;
 
 import com.badlogic.gdx.graphics.Texture;
 

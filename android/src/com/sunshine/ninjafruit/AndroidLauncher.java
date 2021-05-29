@@ -1,15 +1,15 @@
-package com.fruitslicer;
-
-import android.os.Bundle;
+package com.sunshine.ninjafruit;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+
+import android.os.Bundle;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new FruitSlicer(), config);
+		initialize(new NinjaFruitGame(), config);
 	}
 }

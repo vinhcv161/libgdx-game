@@ -9,17 +9,18 @@ import com.sunshine.ninjafruit.tools.GameCamera;
 import com.sunshine.ninjafruit.tools.ScrollingBackground;
 
 public class NinjaFruitGame extends Game {
-	
-	public static final int WIDTH = 480;
-	public static final int HEIGHT = 720;
+	public static int WIDTH;
+	public static int HEIGHT;
 	public static boolean IS_MOBILE = false;
 	
 	public SpriteBatch batch;
 	public ScrollingBackground scrollingBackground;
 	public GameCamera cam;
-	
+
 	@Override
 	public void create () {
+		WIDTH = Gdx.graphics.getWidth();
+		HEIGHT = Gdx.graphics.getHeight();
 		batch = new SpriteBatch();
 		cam = new GameCamera(WIDTH, HEIGHT);
 		

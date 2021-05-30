@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.sunshine.ninjafruit.NinjaFruitGame;
 
 public class GameCamera {
 	
@@ -29,7 +30,7 @@ public class GameCamera {
 	}
 	
 	public Vector2 getInputInGameWorld () {
-		Vector3 inputScreen = new Vector3(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0);
+		Vector3 inputScreen = new Vector3(Gdx.input.getX(), NinjaFruitGame.HEIGHT - Gdx.input.getY(), 0);
 		Vector3 unprojected = cam.unproject(inputScreen);
 		return new Vector2(unprojected.x, unprojected.y);
 	}

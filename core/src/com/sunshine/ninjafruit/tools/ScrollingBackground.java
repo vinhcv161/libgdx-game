@@ -12,7 +12,7 @@ public class ScrollingBackground {
 	
 	Texture image;
 	float y1, y2;
-	int speed;//In pixels / second
+	int speed; //In pixels / second
 	int goalSpeed;
 	float imageScale;
 	boolean speedFixed;

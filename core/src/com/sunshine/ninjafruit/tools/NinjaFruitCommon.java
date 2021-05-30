@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.sunshine.ninjafruit.NinjaFruitGame;
 import com.sunshine.ninjafruit.entities.Fruit;
 import com.sunshine.ninjafruit.entities.LevelTransporters;
-import com.sunshine.ninjafruit.screens.GameOverScreen;
+import com.sunshine.ninjafruit.screens.menu.GameOverScreen;
 
 import java.util.Random;
 
@@ -46,6 +46,9 @@ public class NinjaFruitCommon implements Screen {
     }
 
     public void init(LevelTransporters trans) {
+        // Điện thoại được sử dụng theo chiều ngang hay chiều dọc
+        Fruit.radius = Math.max(NinjaFruitGame.HEIGHT, NinjaFruitGame.WIDTH) / 18f;
+
         initFromTrans(trans);
         initItems();
         //initMusic();
@@ -57,7 +60,7 @@ public class NinjaFruitCommon implements Screen {
         if (trans.background != null) background = trans.background;
         else background = new Texture("fruit-game/ninja.jpg");
         if (trans.textFont != null) textFont = trans.textFont;
-        else textFont = Utils.createFont("fonts/robotobold.ttf", Color.WHITE, 80, Color.ROYAL, 2f);
+        else textFont = Utils.createFont("fonts/robotobold.ttf", Color.WHITE, (int) (0.6f * Fruit.radius), Color.ROYAL, 2f);
 
         if (trans.music != null) music = trans.music;
         else music = Gdx.audio.newMusic(Gdx.files.internal("audios/music.mp3"));
@@ -81,8 +84,6 @@ public class NinjaFruitCommon implements Screen {
         time = new Texture("fruit-game/piecesTime.png");
         pizza = new Texture("fruit-game/pizza.png");
         coin = new Texture("fruit-game/piecesCoin.png");
-        // Điện thoại được sử dụng theo chiều ngang hay chiều dọc
-        Fruit.radius = Math.max(NinjaFruitGame.HEIGHT, NinjaFruitGame.WIDTH) / 18f;
     }
 
     private void initMusic() {

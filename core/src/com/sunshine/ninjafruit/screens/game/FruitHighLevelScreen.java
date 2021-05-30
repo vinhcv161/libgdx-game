@@ -1,4 +1,4 @@
-package com.sunshine.ninjafruit.screens;
+package com.sunshine.ninjafruit.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,5 +15,7 @@ public class FruitHighLevelScreen extends NinjaFruitCommon {
         trans.zorlukLimit = 0.48f;
         trans.genSpeed = 0.76f;
         super.init(trans);
+
+        System.out.println("FruitHighLevelScreen");
     }
 }

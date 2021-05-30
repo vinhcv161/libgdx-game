@@ -1,4 +1,4 @@
-package com.sunshine.ninjafruit.screens;
+package com.sunshine.ninjafruit.screens.game;
 
 import com.sunshine.ninjafruit.NinjaFruitGame;
 import com.sunshine.ninjafruit.entities.LevelTransporters;
@@ -9,5 +9,7 @@ public class FruitEasyLevelScreen extends NinjaFruitCommon {
         super(game);
         LevelTransporters trans = new LevelTransporters();
         super.init(trans);
+
+        System.out.println("FruitEasyLevelScreen");
     }
 }

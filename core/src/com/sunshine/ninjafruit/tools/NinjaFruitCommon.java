@@ -19,7 +19,7 @@ import com.sunshine.ninjafruit.screens.menu.GameOverScreen;
 import java.util.Random;
 
 public class NinjaFruitCommon implements Screen {
-    NinjaFruitGame game;
+    private NinjaFruitGame game;
 
     // sound
     private Music music;
@@ -27,9 +27,9 @@ public class NinjaFruitCommon implements Screen {
     private Integer[] touchPointsX; // chỉ gồm 2 phần tử, tác dụng ghi log để check đảo chiều di ngón tay
     private int touchIdx;
 
-    Texture background, pizza, apple, bomb, time, coin; //Xác định các hình ảnh sẽ sử dụng trong lớp Texture.
-    BitmapFont textFont;
-    Random random;
+    private Texture background, pizza, apple, bomb, coin; //Xác định các hình ảnh sẽ sử dụng trong lớp Texture.
+    private BitmapFont textFont;
+    private Random random;
 
     float zorluk, zorlukLimit;
     int lives;
@@ -39,7 +39,7 @@ public class NinjaFruitCommon implements Screen {
     float genCounter;
     float genSpeed;
 
-    Array<Fruit> fruitArray;
+    private Array<Fruit> fruitArray;
 
     public NinjaFruitCommon(NinjaFruitGame game) {
         this.game = game;
@@ -64,9 +64,6 @@ public class NinjaFruitCommon implements Screen {
 
         if (trans.music != null) music = trans.music;
         else music = Gdx.audio.newMusic(Gdx.files.internal("audios/music.mp3"));
-        music.setLooping(true);
-        music.setVolume(0.1f);
-        music.play(); // play music
 
         if (trans.sound != null) sound = trans.sound;
         else sound = Gdx.audio.newSound(Gdx.files.internal("audios/sfx_wing.ogg"));
@@ -81,13 +78,18 @@ public class NinjaFruitCommon implements Screen {
     private void initItems() {
         apple = new Texture("fruit-game/apple.png");
         bomb = new Texture("fruit-game/piecesBomb.png");
-        time = new Texture("fruit-game/piecesTime.png");
         pizza = new Texture("fruit-game/pizza.png");
         coin = new Texture("fruit-game/piecesCoin.png");
     }
 
     private void initMusic() {
-        touchPointsX = new Integer[2];
+        if (!music.isPlaying()) {
+            music.setLooping(true);
+            music.setVolume(0.1f);
+            music.play(); // play music
+
+            touchPointsX = new Integer[2];
+        }
     }
 
     private void initParams() {
@@ -211,7 +213,7 @@ public class NinjaFruitCommon implements Screen {
         }
 
         for (int i = 0; i < lives; i++) {
-            game.batch.draw(coin, 30 + (i * 100), NinjaFruitGame.HEIGHT - 110f, 100f, 100f);
+            game.batch.draw(coin, Fruit.radius / 3 + (i * Fruit.radius), NinjaFruitGame.HEIGHT - Fruit.radius, Fruit.radius, Fruit.radius);
         }
 
         for (Fruit fruit : fruitArray) {
@@ -263,9 +265,9 @@ public class NinjaFruitCommon implements Screen {
 
         //
         GlyphLayout scoreLayout = new GlyphLayout(textFont, "Score: " + score);
-        textFont.draw(game.batch, scoreLayout, 50, 100);
+        textFont.draw(game.batch, scoreLayout, Fruit.radius / 3, 0.6f * Fruit.radius);
         scoreLayout = new GlyphLayout(textFont, "Bomb: " + bombs);
-        textFont.draw(game.batch, scoreLayout, 50, 200);
+        textFont.draw(game.batch, scoreLayout, Fruit.radius / 3, 1.25f * Fruit.radius);
 
         game.batch.end();
     }

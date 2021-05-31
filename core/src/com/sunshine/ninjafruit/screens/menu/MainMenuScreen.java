@@ -37,7 +37,7 @@ public class MainMenuScreen implements Screen {
         background = new Texture("fruit-game/menu-background.jpg");
 
         int i = 0;
-        // o.25f = 0.5f - 1.5f/2;
+        // 0.25f = 0.5f - 1.5f/2;
         logo = new ImagePosition(new Texture("fruit-game/logo.jpg"), xBtn - 0.25f * widthBtn, yBtn - i++ * paddingBtn, widthBtn * 1.5f, heightBtn * 1.5f);
 
         playNowBtn = new ImagePosition(new Texture("fruit-game/playNow.png"), xBtn, yBtn - i++ * paddingBtn, widthBtn, heightBtn);
@@ -48,7 +48,7 @@ public class MainMenuScreen implements Screen {
         game.scrollingBackground.setSpeed(ScrollingBackground.DEFAULT_SPEED);
 
         Preferences prefs = Gdx.app.getPreferences(Constants.CacheKey.APP_CACHE_KEY);
-        this.level = prefs.getInteger(Constants.CacheKey.LEVEL_KEY, 1);
+        this.level = prefs.getInteger(Constants.CacheKey.LEVEL_KEY, Level.EASY_LEVEL_KEY);
         final MainMenuScreen mainMenuScreen = this;
 
         Gdx.input.setInputProcessor(new InputAdapter() {
